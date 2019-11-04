@@ -1,0 +1,11 @@
+---
+- name: Simple Sinatra APP
+  hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: Install latest available version of bundler
+      gem:
+        name: bundler
+        state: latest
