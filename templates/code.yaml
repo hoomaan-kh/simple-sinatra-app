@@ -113,20 +113,16 @@ Resources:
     Properties:
       UserData:
         Fn::Base64:
-          Fn::Join: [
-            "",
-            [
-              "#!/bin/bash -x\n"
-              "yum -y update\n"
-              "yum -y install git\n"
-              "amazon-linux-extras install ruby2.6 -y\n"
-              "gem install bundler\n"
-              "git clone https://github.com/ateerf/simple-sinatra-app.git\n"
-              "cd /simple-sinatra-app/\n"
-              "bundle install\n"
-              "bundle exec rackup\n"
-            ]
-          ]
+          !Sub |
+              #!/bin/bash -ex
+              yum -y update;
+              yum -y install git;
+              amazon-linux-extras install ruby2.6 -y;
+              gem install bundler;
+              git clone https://github.com/ateerf/simple-sinatra-app.git;
+              cd /simple-sinatra-app/;
+              bundle install;
+              bundle exec rackup;
       DisableApiTermination: 'false'
       InstanceInitiatedShutdownBehavior: stop
       ImageId: ami-03ed5bd63ba378bd8
