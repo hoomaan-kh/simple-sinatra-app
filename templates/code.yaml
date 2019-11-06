@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: 2010-09-09
-# Parameters:
-#     ComputeKeyPairNameParameter:
-#       Description: The Compute Resources Key Pair Name
-#       Type: AWS::EC2::KeyPair::KeyName
+Parameters:
+  ComputeKeyPairNameParameter:
+    Description: The Compute Resources Key Pair Name
+    Type: AWS::EC2::KeyPair::KeyName
 Resources:
   REAWebVPC:
     Type: 'AWS::EC2::VPC'
@@ -133,6 +133,7 @@ Resources:
           PrivateIpAddresses:
             - PrivateIpAddress: 10.0.1.29
               Primary: 'true'
-          GroupSet: !Ref REAWebSecurityGroup
+          GroupSet:
+            - !Ref REAWebSecurityGroup
           AssociatePublicIpAddress: 'true'
 Description: REA-Challenge

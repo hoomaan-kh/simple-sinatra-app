@@ -7,10 +7,10 @@
   tasks:
     - name: Create AEM App Main Resources Stack with permission type b
       cloudformation:
-        stack_name: "SinatraAPP01"
+        stack_name: "{{ stack_prefix }}"
         region: "ap-southeast-2"
         state: present
         disable_rollback: true
         template: "../templates/code.yaml"
-        # template_parameters:
-        #   ComputeKeyPairNameParameter: "{{ key }}"
+        template_parameters:
+          ComputeKeyPairNameParameter: "{{ key_name }}"
