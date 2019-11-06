@@ -12,5 +12,5 @@
         state: present
         disable_rollback: true
         template: "../templates/code.yaml"
-        template_parameters:
-          ComputeKeyPairNameParameter: "{{ key }}"
+        # template_parameters:
+        #   ComputeKeyPairNameParameter: "{{ key }}"

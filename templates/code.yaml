@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: 2010-09-09
-Parameters:
-    ComputeKeyPairNameParameter:
-      Description: The Compute Resources Key Pair Name
-      Type: AWS::EC2::KeyPair::KeyName
+# Parameters:
+#     ComputeKeyPairNameParameter:
+#       Description: The Compute Resources Key Pair Name
+#       Type: AWS::EC2::KeyPair::KeyName
 Resources:
   REAWebVPC:
     Type: 'AWS::EC2::VPC'
@@ -43,33 +43,7 @@ Resources:
     Type: 'AWS::EC2::RouteTable'
     Properties:
       VpcId: !Ref REAWebVPC
-  REAWebEC2Instance:
-    Type: 'AWS::EC2::Instance'
-    Properties:
-      UserData:
-        Fn::Base64:
-          "#!/bin/bash -x\n sudo yum -y update\n sudo yum -y install git\n sudo amazon-linux-extras install ruby2.6 -y\n sudo gem install bundler\n git clone https://github.com/ateerf/simple-sinatra-app.git\n cd /simple-sinatra-app/\n bundle install\n bundle exec rackup\n"
-      DisableApiTermination: 'false'
-      InstanceInitiatedShutdownBehavior: stop
-      ImageId: ami-03ed5bd63ba378bd8
-      InstanceType: t2.micro
-      KeyName: !Ref ComputeKeyPairNameParameter
-      Monitoring: 'false'
-      Tags:
-        - Key: Stack
-          Value: EC2-WebServer
-        - Key: Name
-          Value: REA
-      NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          Description: Primary network interface
-          DeviceIndex: 0
-          SubnetId: !Ref REAWebPublicSubnet
-          PrivateIpAddresses:
-            - PrivateIpAddress: 10.0.1.29
-              Primary: 'true'
-          GroupSet: !Ref REAWebSecurityGroup
-          AssociatePublicIpAddress: 'true'
+
   REAWebSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -134,4 +108,31 @@ Resources:
       GroupId: !Ref REAWebSecurityGroup
       IpProtocol: '-1'
       CidrIp: 0.0.0.0/0
+  REAWebEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      UserData:
+        Fn::Base64:
+          "#!/bin/bash -x\n sudo yum -y update\n sudo yum -y install git\n sudo amazon-linux-extras install ruby2.6 -y\n sudo gem install bundler\n git clone https://github.com/ateerf/simple-sinatra-app.git\n cd /simple-sinatra-app/\n bundle install\n bundle exec rackup\n"
+      DisableApiTermination: 'false'
+      InstanceInitiatedShutdownBehavior: stop
+      ImageId: ami-03ed5bd63ba378bd8
+      InstanceType: t2.micro
+      KeyName: "MySydneyKP"
+      Monitoring: 'false'
+      Tags:
+        - Key: Stack
+          Value: EC2-WebServer
+        - Key: Name
+          Value: REA
+      NetworkInterfaces:
+        - DeleteOnTermination: 'true'
+          Description: Primary network interface
+          DeviceIndex: 0
+          SubnetId: !Ref REAWebPublicSubnet
+          PrivateIpAddresses:
+            - PrivateIpAddress: 10.0.1.29
+              Primary: 'true'
+          GroupSet: !Ref REAWebSecurityGroup
+          AssociatePublicIpAddress: 'true'
 Description: REA-Challenge
